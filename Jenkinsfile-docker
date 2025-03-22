@@ -7,8 +7,9 @@ pipeline {
     }
 
     environment {
-        IMAGE_NAME = 'immanuvel12/react-app'
+        IMAGE_NAME = 'lipiga/devopstask1'
         CONTAINER_NAME = 'react_container'
+        APP_PORT = '3003'
     }
 
     stages {
@@ -26,8 +27,8 @@ pipeline {
             steps {
                 script {
                     git branch: 'main',
-                        credentialsId: 'github_secret',
-                        url: 'https://github.com/Immanuvel1207/Full-stack-demo.git'
+                        credentialsId: 'github_seccred',
+                        url: ''
                 }
             }
         }
@@ -71,7 +72,7 @@ pipeline {
                     sh """
                     docker stop ${CONTAINER_NAME} || true
                     docker rm ${CONTAINER_NAME} || true
-                    docker run -d --name ${CONTAINER_NAME} -p 80:80 ${IMAGE_NAME}:latest
+                    docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:3003 ${IMAGE_NAME}:latest
                     """
                 }
             }
