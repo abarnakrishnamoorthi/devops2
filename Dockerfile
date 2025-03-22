@@ -1,23 +1,20 @@
-# Use Node.js Alpine base image to build React
-FROM node:alpine as build
+# Use Node.js Alpine base image
+FROM node:alpine
 
+# Create and set the working directory inside the container
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+# Copy package.json and package-lock.json to the working directory
+COPY package.json package-lock.json /app/
 
+# Install dependencies
 RUN npm install
 
-COPY . . 
+# Copy the entire codebase to the working directory
+COPY . /app/
 
-RUN npm run build
+# Expose the port your app runs on (default: 3000 inside the container)
+EXPOSE 3000
 
-# Use Nginx for production server
-FROM nginx:alpine
-
-# Copy React build files to Nginx
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Expose port 80 for serving the React app
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Define the command to start your application
+CMD ["npm", "start"]
